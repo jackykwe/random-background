@@ -54,7 +54,7 @@ Options:
    > [!IMPORTANT]
    > The first run of the program will fail, as designed. You need to specify `ttf_font_path` in `<DIR>/Working/config.toml`, which is generated after the first run. Then re-run the program.
 
-1. Copy `random-background.fish.example` to `random-background.fish` (at any location of your choice ($*$)). Specify the directory of background images.
+1. Copy `random-background.fish.example` to `random-background.fish` (at any location of your choice ($*$)). Specify the path to this repository, and also the directory of background images.
 
    N.B. This directory should contain only images files (e.g. png, jpg, webp, gif, etc.) and directories.
 
@@ -75,6 +75,12 @@ Options:
    ```
 
 3. Copy `random-background.timer` into `~/.config/systemd/user/`.
+
+   ```bash
+   # Example bash/fish commands
+   cp random-background.timer ~/.config/systemd/user/random-background.timer
+   ```
+
 4. Run `systemctl --user enable --now random-background.timer`. You're done.
 
 ## `systemd` tear-down

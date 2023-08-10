@@ -3,6 +3,7 @@ Description=Select random background daily (timer)
 
 [Timer]
 OnCalendar=daily
+Persistent=true
 Unit=%i.service
 
 [Install]
