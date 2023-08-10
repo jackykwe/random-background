@@ -19,14 +19,14 @@ pub(crate) const SCREEN_HEIGHT_PX: u32 = 1080;
 
 pub(crate) fn choose_one_image(dir_path: &str) -> anyhow::Result<String> {
     let all_paths = std::fs::read_dir(dir_path)
-        .with_context(|| format!("Directory \"{}\" does not exist", dir_path))?;
+        .with_context(|| format!("Directory {} does not exist", dir_path))?;
     let image_paths = all_paths
         .filter_map(|path| path.ok())
         .filter(|path| path.metadata().is_ok_and(|metadata| metadata.is_file()));
     image_paths
         .choose(&mut rand::thread_rng())
         .map(|e| e.path().display().to_string())
-        .ok_or(anyhow!("Directory \"{}\" is empty", dir_path))
+        .ok_or(anyhow!("Directory {} is empty", dir_path))
 }
 
 /// No cropping is done!
@@ -104,7 +104,7 @@ pub(crate) fn process_image(
     final_path: &str,
     config: &Config,
 ) -> anyhow::Result<()> {
-    log::info!("Processing (reading) image: \"{}\"", image_path);
+    log::info!("Processing (reading) image: {}", image_path);
     let mut img = image::io::Reader::open(image_path)?.decode()?;
     log::info!("Resizing image");
     img = resize_to_contain_screen(img);
@@ -115,7 +115,7 @@ pub(crate) fn process_image(
     log::info!("Loading font");
     let font_data = std::fs::read(&config.general.ttf_font_path)?;
     let font = rusttype::Font::try_from_vec(font_data).ok_or(anyhow!(
-        "Invalid font provided at \"{}\"",
+        "Invalid font provided at {}",
         config.general.ttf_font_path
     ))?;
     let image_name = PathBuf::from(image_path)
@@ -200,8 +200,8 @@ pub(crate) fn process_image(
                 255,
                 255,
                 // 48 + pixel_mean,
-                // 48 + ((pixel_mean as f64 / 127.0) * (127.0 - 48.0)) as u8,
-                48 + ((pixel_mean as f64 / 127.0).powf(2.2) * (127.0 - 48.0)) as u8,
+                48 + ((pixel_mean as f64 / 127.0) * (127.0 - 48.0)) as u8,
+                // 48 + ((pixel_mean as f64 / 127.0).powf(2.2) * (127.0 - 48.0)) as u8,
             ])
         } else {
             // Original background is more bright than dark; use black overlay
@@ -213,8 +213,8 @@ pub(crate) fn process_image(
                 0,
                 0,
                 // 48 + (255 - pixel_mean),
-                // 48 + (((255 - pixel_mean) as f64 / 127.0) * (127.0 - 48.0)) as u8,
-                48 + (((255 - pixel_mean) as f64 / 127.0).powf(2.2) * (127.0 - 48.0)) as u8,
+                48 + (((255 - pixel_mean) as f64 / 127.0) * (127.0 - 48.0)) as u8,
+                // 48 + (((255 - pixel_mean) as f64 / 127.0).powf(2.2) * (127.0 - 48.0)) as u8,
             ])
         };
         log::debug!("pixel_mean = {}", pixel_mean);

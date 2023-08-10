@@ -6,7 +6,7 @@ use toml::value::Datetime;
 
 pub(crate) const TOML_TEMPLATE: &'static str = "\
     [general]\n\
-    ttf_font_path = '/path/to/font.ttf'\n\
+    # ttf_font_path = '/path/to/font.ttf'\n\
     \n\
     # [countdown]\n\
     # term_start = <YYYY-MM-DD>\n\
@@ -37,7 +37,12 @@ impl Config {
                 config_toml_path.to_string_lossy().to_string()
             )
         })?;
-        Ok(toml::from_str(&toml_str)?)
+        Ok(toml::from_str(&toml_str).with_context(|| {
+            format!(
+                "Please fix the TOML file at {}. (Is this the first time this program is run?)",
+                config_toml_path.to_string_lossy().to_string()
+            )
+        })?)
     }
 }
 

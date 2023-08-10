@@ -26,7 +26,7 @@ fn ensure_working_dir_exists(parent_dir: &str) -> anyhow::Result<()> {
     let working_directory_path: PathBuf = [parent_dir, "Working"].iter().collect();
     std::fs::create_dir_all(&working_directory_path).with_context(|| {
         format!(
-            "Failed to ensure \"{}\" directory exists",
+            "Failed to ensure {} directory exists",
             working_directory_path.to_string_lossy().to_string()
         )
     })?;
@@ -43,9 +43,9 @@ fn ensure_blank_background_exists(blank_wallpaper_path: &str) -> anyhow::Result<
 fn main() -> anyhow::Result<()> {
     env_logger::init();
     let args: Args = Args::parse();
+    ensure_working_dir_exists(&args.dir)?;
     let config = Config::read_from_dir(&args.dir)?;
 
-    ensure_working_dir_exists(&args.dir)?;
     let blank_wallpaper_path: PathBuf = [&args.dir, "Working", "blank.png"].iter().collect();
     let blank_wallpaper_path = blank_wallpaper_path.to_string_lossy().to_string();
     ensure_blank_background_exists(&blank_wallpaper_path)?;
