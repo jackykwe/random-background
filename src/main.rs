@@ -1,5 +1,6 @@
 use anyhow::{anyhow, Context};
 use clap::{command, Parser};
+use image::{Rgb, RgbImage};
 use std::path::PathBuf;
 
 use crate::{
@@ -14,7 +15,7 @@ mod imageops;
 mod imageutils;
 
 #[derive(Parser, Debug)]
-#[command(name = "KDE Random Background", author, version, about, long_about = None)]
+#[command(name = "Random Background", author, version, about, long_about = None)]
 struct Args {
     /// Path to directory containing the images
     #[arg(short, long)]
@@ -33,13 +34,14 @@ fn ensure_working_dir_exists(parent_dir: &str) -> anyhow::Result<()> {
 }
 
 fn ensure_blank_background_exists(blank_wallpaper_path: &str) -> anyhow::Result<()> {
-    image::RgbImage::from_pixel(1, 1, image::Rgb([0, 0, 0]))
+    RgbImage::from_pixel(1, 1, Rgb([0, 0, 0]))
         .save(&blank_wallpaper_path)
         .with_context(|| format!("Failed to save blank wallpaper to {}", blank_wallpaper_path))?;
     Ok(())
 }
 
 fn main() -> anyhow::Result<()> {
+    env_logger::init();
     let args: Args = Args::parse();
     let config = Config::read_from_dir(&args.dir)?;
 

@@ -12,13 +12,17 @@ pub(crate) const TOML_TEMPLATE: &'static str = "\
     # term_start = <YYYY-MM-DD>\n\
     # term_last_lecture = <YYYY-MM-DD>\n\
     # first_paper = <YYYY-MM-DD>\n\
-    # last_paper_end_time = <YYYY-MM-DD>T<HH:MM:SS>\
+    # last_paper_end_time = <YYYY-MM-DD>T<HH:MM:SS>\n\
+    \n\
+    # [overlay]\n\
+    # text = ''\n\
 ";
 
 #[derive(Deserialize, Debug)]
 pub(crate) struct Config {
     pub(crate) general: ConfigGeneral,
     pub(crate) countdown: Option<ConfigCountdown>,
+    pub(crate) overlay: Option<ConfigOverlay>,
 }
 
 impl Config {
@@ -48,4 +52,9 @@ pub(crate) struct ConfigCountdown {
     pub(crate) term_last_lecture: Datetime,
     pub(crate) first_paper: Datetime,
     pub(crate) last_paper_end_time: Datetime,
+}
+
+#[derive(Deserialize, Debug)]
+pub(crate) struct ConfigOverlay {
+    pub(crate) text: String,
 }

@@ -1,4 +1,4 @@
-# kde-random-background
+# random-background
 
 # Arch Linux Resources
 

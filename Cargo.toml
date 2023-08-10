@@ -1,5 +1,5 @@
 [package]
-name = "kde-random-background"
+name = "random-background"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,8 +10,10 @@ anyhow = "1.0.72"
 chrono = "0.4.26"
 clap = { version = "4.3.21", features = ["derive"] }
 divrem = "1.0.0"
+env_logger = "0.10.0"
 image = "0.24.6"
 imageproc = "0.23.0"
+log = "0.4.19"
 now = "0.1.3"
 rand = "0.8.5"
 rusttype = "0.9.3"

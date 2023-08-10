@@ -1,7 +1,14 @@
 {
   "cSpell.words": [
+    "Catmull",
     "color",
+    "dateutils",
+    "divrem",
+    "imageops",
     "imageproc",
-    "luma"
+    "imageutils",
+    "luma",
+    "powf",
+    "rusttype"
   ]
 }

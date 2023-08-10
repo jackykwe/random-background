@@ -26,8 +26,8 @@ pub fn draw_text_with_border_mut<'a>(
     // Add a border to the text.
     for x in 0..t_image.width() {
         for y in 0..t_image.height() {
-            let pixval = 255 - t_image.get_pixel(x, y).0[0];
-            if pixval != 255 {
+            let pixel_value = 255 - t_image.get_pixel(x, y).0[0];
+            if pixel_value != 255 {
                 // i.e. image2.get_pixel(x, y).0[0] is not 0 (black)
                 canvas.get_pixel_mut(x, y).blend(&outline_color);
             }
