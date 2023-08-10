@@ -6,7 +6,7 @@ use toml::value::Datetime;
 
 pub(crate) const TOML_TEMPLATE: &'static str = "\
     [general]\n\
-    # ttf_font_path = '/path/to/font.ttf'\n\
+    ttf_font_path = '/path/to/font.ttf'\n\
     \n\
     # [countdown]\n\
     # term_start = <YYYY-MM-DD>\n\

@@ -9,6 +9,7 @@
     "imageutils",
     "luma",
     "powf",
-    "rusttype"
+    "rusttype",
+    "webp"
   ]
 }

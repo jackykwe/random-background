@@ -2,6 +2,33 @@
 
 A utility program I use to randomly select a background from a collection of images. This README also outlines how to setup `systemd` so that this program runs daily.
 
+## Operation Overview
+
+This program takes in the path to the directory of background images, then creates a working directory named "Working" inside it.
+
+- The current background will be generated in memory, saved to this folder, then set as the desktop background.
+- A `config.toml` file is also generated in this folder. The signature is as follows:
+
+  ```toml
+  [general]
+  ttf_font_path = '/path/to/font.ttf'
+
+  # [countdown]
+  # term_start = <YYYY-MM-DD>
+  # term_last_lecture = <YYYY-MM-DD>
+  # first_paper = <YYYY-MM-DD>
+  # last_paper_end_time = <YYYY-MM-DD>T<HH:MM:SS>
+
+  # [overlay]
+  # text = ''
+  ```
+
+  - `ttf_font_path` specifies the path to the font file used to draw text onto the generated background.
+  - The `[countdown]` section either doesn't exist entirely, or exists as a collective whole with all parts present. When present, a days countdown will be drawn in the bottom left corner of the generated background.
+  - The `[overlay]` section either doesn't exist entirely, or exists as a collective with all part present. When present, a large stencil overlay containing the `text` will be drawn over the generated background.
+
+  Error checking is built into the program; if things don't work you'll be directed on how to fix them via error messages.
+
 ## How to Use
 
 While in this directory, `cargo run --release -- --dir <DIR>`, where `<DIR>` is the directory of background images.
@@ -17,7 +44,15 @@ Options:
   -V, --version    Print version
 ```
 
+> [!IMPORTANT]
+> The first run of the program will fail, as designed. You need to specify `ttf_font_path` in `<DIR>/Working/config.toml`, which is generated after the first run. Then re-run the program.
+
 ## `systemd` setup
+
+0. Run the program manually as above (["How to Use"](#how-to-use)) first. Proceed with the following steps only after witnessing the program finish without error.
+
+   > [!IMPORTANT]
+   > The first run of the program will fail, as designed. You need to specify `ttf_font_path` in `<DIR>/Working/config.toml`, which is generated after the first run. Then re-run the program.
 
 1. Copy `random-background.fish.example` to `random-background.fish` (at any location of your choice ($*$)). Specify the directory of background images.
 
@@ -42,7 +77,7 @@ Options:
 3. Copy `random-background.timer` into `~/.config/systemd/user/`.
 4. Run `systemctl --user enable --now random-background.timer`. You're done.
 
-## `systemd` teardown
+## `systemd` tear-down
 
 To remove the `systemd` timer (responsible for making the program run once daily):
 
