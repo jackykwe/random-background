@@ -1,0 +1,9 @@
+[Unit]
+Description=Select random background daily (service)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/fish /<PATH>/<TO>/<THIS>/<REPOSITORY>/random-background.fish
+
+[Install]
+WantedBy=default.target

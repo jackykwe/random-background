@@ -1,0 +1,1 @@
+cargo run --release -- --dir <DIR> # Insert image folder here

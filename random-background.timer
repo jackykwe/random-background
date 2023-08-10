@@ -1,0 +1,9 @@
+[Unit]
+Description=Select random background daily (timer)
+
+[Timer]
+OnCalendar=daily
+Unit=%i.service
+
+[Install]
+WantedBy=default.target
