@@ -29,7 +29,28 @@ This program takes in the path to the directory of background images, then creat
 
   Error checking is built into the program; if things don't work you'll be directed on how to fix them via error messages.
 
-## How to Use
+## How to Use (NixOS)
+Add these lines to your system Nix config's `flake.nix` under the inputs section:
+```nix
+inputs = {
+  # ...
+  random-background = {
+    url = "github:jackykwe/random-background";
+    inputs.nixpkgs.follows = "nixpkgs";  # optional
+  };
+};
+```
+Then add this `home.nix`:
+```nix
+home.packages = [
+  #...
+  inputs.random-background.defaultPackage.x86_64-linux
+];
+```
+
+Full usage method derived from [this discussion](https://www.reddit.com/r/NixOS/comments/1bxa6dc/noob_question_how_to_install_software_from_github/).
+
+## How to Use (all other OSes)
 
 While in this directory, `cargo run --release -- --dir <DIR>`, where `<DIR>` is the directory of background images.
 

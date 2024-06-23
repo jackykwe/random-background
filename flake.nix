@@ -6,19 +6,29 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     naersk.url = "github:nix-community/naersk/master";  # Nix library for building Rust projects
     utils.url = "github:numtide/flake-utils";  # to simplify Flake writing
-
+    # nix-vscode-extensions = {
+    #   url = "github:nix-community/nix-vscode-extensions";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     # pkgs = import (fetchTarball("https://github.com/NixOS/nixpkgs/archive/a58a0b5098f0c2a389ee70eb69422a052982d990.tar.gz")) {};
   };
   outputs = {
     self,  # directory of this flake in the Nix store (see https://nixos.wiki/wiki/Flakes#Output_schema)
     nixpkgs,
     naersk,
-    utils
+    utils,
+    # nix-vscode-extensions
   }:
   utils.lib.eachSystem [ utils.lib.system.x86_64-linux ] (system:
     # devShells.${system}.default = pkgs.mkShell {
     let
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        # config.allowUnfree = true;  # Courtesy of https://discourse.nixos.org/t/allow-unfree-in-flakes/29904/2 (see also https://nixos.wiki/wiki/Unfree_Software)
+        # overlays = [
+        #   nix-vscode-extensions.overlays.default  # provides pkgs.vscode-marketplace
+        # ];
+      };
       naersk-lib = pkgs.callPackage naersk {};
 
       # ? pkgs.callPackage is like an import, but additionally passes all the arguments of naersk
@@ -39,10 +49,13 @@
         nativeBuildInputs = [
           cargo
           rustc
-          rustfmt
-          # pre-commit
-          rustPackages.clippy  # TODO: pkgs.rustPackages exists, but how...
           bacon
+          # (vscode-with-extensions.override {
+          #   # Syntax from documentation in https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/editors/vscode/with-extensions.nix
+          #   vscodeExtensions = with pkgs.vscode-marketplace; [
+          #     rust-lang.rust-analyzer
+          #   ];
+          # })
         ];
         RUST_SRC_PATH = rustPlatform.rustLibSrc;
       };
